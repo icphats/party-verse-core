@@ -14,5 +14,16 @@
   "type": "module",
   "workspaces": [
     "src/party-verse-core-frontend"
-  ]
+  ],
+  "dependencies": {
+    "@dfinity/agent": "^2.1.3",
+    "@dfinity/auth-client": "^2.1.3",
+    "@dfinity/candid": "^2.1.3",
+    "@dfinity/identity": "^2.1.3",
+    "@dfinity/principal": "^2.1.3",
+    "@dfinity/utils": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1"
+  }
 }
