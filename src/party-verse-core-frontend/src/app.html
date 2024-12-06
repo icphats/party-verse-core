@@ -3,11 +3,23 @@
 
 <head>
 	<meta charset="utf-8" />
-	<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-	<title>IC Hello Starter</title>
+	<title>Welcome to the Partyverse</title>
 	%sveltekit.head%
+
+	<style>
+		@font-face {
+			font-family: 'HalfBoldPixel';
+			src: url('%sveltekit.assets%/half_bold_pixel-7.ttf') format('truetype');
+			font-weight: normal;
+			font-style: normal;
+		}
+		html {
+			font-family: 'HalfBoldPixel', sans-serif;
+		}
+	</style>
+	
 </head>
 
 <body data-sveltekit-preload-data="hover">
