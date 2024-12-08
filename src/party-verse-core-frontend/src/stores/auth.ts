@@ -81,8 +81,6 @@ const initialAuth = {
   init: () => {},
   identity: null,
   authClient: null,
-  minterActor: null,
-  tokenActor: null,
   agent: null,
   pid: "",
 };
@@ -173,7 +171,6 @@ export const auth = readable(initialAuth, (set) => {
       auth.identity = null;
       auth.agent = null;
       auth.pid = "";
-      localStorage.removeItem("partyBalance");
       set(auth);
     },
   };

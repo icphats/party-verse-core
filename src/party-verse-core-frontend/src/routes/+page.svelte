@@ -3,23 +3,26 @@
   import { onMount } from "svelte";
   import { auth } from "../stores/auth";
   import Background from "./background.svelte";
+  import { goto } from "$app/navigation";
 
   onMount(async () => {
     $auth.init();
   });
 
+  $: if ($auth.identity) {
+    goto("/game");
+  }
+
   const login = async () => {
     $auth.login();
   };
-
-  $: pid = $auth.pid;
 </script>
 
 <div class="parent">
   <Background />
   <div class="inner-container">
-    <div class="landing-page-header-text">"Welcome to the Partyverse"</div>
-    <button class="play-button glow-effect" on:click={login}>Play</button>
+    <div class="landing-page-header-text">Welcome to the Partyverse</div>
+    <button class="play-button glow-effect" on:click={login}>Login</button>
   </div>
 </div>
 
