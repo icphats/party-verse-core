@@ -4,7 +4,7 @@
 
   let images = [];
 
-  const imageModules = import.meta.glob("$lib/assets/party_assets/**/*.png");
+  const imageModules = import.meta.glob("$lib/assets/party/**/*.png");
 
   onMount(async () => {
     await preload();

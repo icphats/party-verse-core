@@ -20,12 +20,10 @@
 
   onMount(() => {
     console.log("Game mounted");
-
     let Engine = window.Engine;
     const engine = new Engine(GODOT_CONFIG);
     engine.startGame({});
   });
 </script>
 
-<div>Game</div>
-<canvas id="canvas"> Your browser does not support the canvas tag. </canvas>
+<canvas id="canvas">Your browser does not support the canvas tag</canvas>

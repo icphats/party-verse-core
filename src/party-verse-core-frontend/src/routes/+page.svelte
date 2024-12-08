@@ -3,15 +3,6 @@
   import { onMount } from "svelte";
   import { auth } from "../stores/auth";
   import Background from "./background.svelte";
-  import { goto } from "$app/navigation";
-
-  onMount(async () => {
-    $auth.init();
-  });
-
-  $: if ($auth.identity) {
-    goto("/game");
-  }
 
   const login = async () => {
     $auth.login();
