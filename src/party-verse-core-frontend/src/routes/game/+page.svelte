@@ -18,11 +18,34 @@
     executableBuffer: null,
   };
 
+  function displayFailureNotice(err) {
+    console.error(err);
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else if (typeof err === "string") {
+      console.error(err);
+    } else {
+      console.error("An unknown error occured");
+    }
+  }
+
   onMount(() => {
     console.log("Game mounted");
     let Engine = window.Engine;
     const engine = new Engine(GODOT_CONFIG);
-    engine.startGame({});
+    engine
+      .startGame({
+        onProgress: function (current, total) {
+          if (current > 0 && total > 0) {
+            console.log("Progress: ", current, total);
+          } else {
+            console.log("Progress: ", current, total);
+          }
+        },
+      })
+      .then(() => {
+        console.log("Game started");
+      }, displayFailureNotice);
   });
 </script>
 
