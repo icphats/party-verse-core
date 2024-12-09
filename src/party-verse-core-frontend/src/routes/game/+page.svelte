@@ -4,6 +4,13 @@
   import { auth } from "../../stores/auth";
   import { goto } from "$app/navigation";
 
+  $: if (!$auth.identity) {
+    //check to make sure we are on the client side only
+    if (typeof window !== "undefined") {
+      goto("/");
+    }
+  }
+
   var index = `PartyWorld`;
   var main_pck = `${index}.pck`;
   var wasm = `${index}.wasm`;
@@ -21,6 +28,7 @@
   };
 
   function displayFailureNotice(err) {
+    $auth.setLoading(false);
     console.error(err);
     if (err instanceof Error) {
       console.error(err.message);
@@ -32,8 +40,6 @@
   }
 
   onMount(() => {
-    if (!$auth.identity) goto("/");
-
     console.log("Game mounted");
     let Engine = window.Engine;
     const engine = new Engine(GODOT_CONFIG);
@@ -54,4 +60,11 @@
   });
 </script>
 
-<canvas id="canvas">Your browser does not support the canvas tag</canvas>
+<canvas class="canvas" id="canvas">Your browser does not support the canvas tag</canvas>
+
+<style>
+  .canvas {
+    /* color: black; */
+    /* background-color: turquoise; */
+  }
+</style>

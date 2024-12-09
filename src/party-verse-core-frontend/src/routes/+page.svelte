@@ -2,13 +2,25 @@
   import "../index.scss";
   import { auth } from "../stores/auth";
   import Background from "./background.svelte";
+  import { onMount } from "svelte";
 
   const login = async () => {
     $auth.login();
+    $auth.setLoading(true);
   };
+
+  const setLoading = () => {
+    if (!$auth.identity) {
+      $auth.setLoading(false);
+    }
+  };
+
+  setTimeout(() => {
+    setLoading();
+  }, 1500);
 </script>
 
-{#if $auth.isReady && !$auth.loading}
+{#if $auth.isReady}
   <div class="parent">
     <Background />
     <div class="inner-container">

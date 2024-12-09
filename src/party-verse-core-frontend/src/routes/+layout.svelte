@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import loading from "$lib/assets/frontend/loading.gif";
+  import loading from "$lib/assets/frontend/loading.webp";
   import { auth } from "../stores/auth";
   import { goto } from "$app/navigation";
 
@@ -15,7 +15,10 @@
   });
 
   $: if ($auth.identity) {
-    goto("/game");
+    //check to make sure we are on the client side only
+    if (typeof window !== "undefined") {
+      goto("/game");
+    }
   }
 
   //adjusts viewport height for mobile devices **very important**
@@ -30,7 +33,9 @@
 <main class="main-container">
   {#if !$auth.isReady || $auth.loading}
     <div class="loading-container">
-      <img class="loading-image" src={loading} alt="loading" />
+      <div class="loading-inner-container">
+        <img class="loading-image" src={loading} alt="loading" />
+      </div>
     </div>
   {/if}
   <slot />
@@ -50,13 +55,23 @@
     position: absolute;
     height: 0;
     width: 0;
-    z-index: -1;
+    z-index: 1;
+  }
+
+  .loading-inner-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    translate: -50% -50%;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    background-color: var(--main-bg-color);
   }
 
   .loading-image {
     position: relative;
-    translate: -50% -50%;
     width: 5rem;
-    z-index: -1;
   }
 </style>

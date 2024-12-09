@@ -122,7 +122,6 @@ export const auth = readable(initialAuth, (set) => {
         auth.isAuthenticated = isAuthenticated;
         auth.identity = identity;
         auth.isReady = true;
-        auth.loading = false;
         set(auth);
       } catch (error) {
         console.error("Unexpected error during init:", error);
@@ -175,7 +174,6 @@ export const auth = readable(initialAuth, (set) => {
       set(auth);
     },
     setLoading: (loading: boolean) => {
-      console.log("setLoading", loading);
       auth.loading = loading;
       set(auth);
     },
