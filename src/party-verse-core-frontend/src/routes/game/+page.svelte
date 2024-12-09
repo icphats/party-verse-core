@@ -39,28 +39,24 @@
     }
   }
 
-  onMount(() => {
+  onMount(async () => {
     console.log("Game mounted");
     let Engine = window.Engine;
     const engine = new Engine(GODOT_CONFIG);
-    engine
-      .startGame({
-        onProgress: function (current, total) {
-          if (current > 0 && total > 0) {
-            console.log("Progress: ", current, total);
-          } else {
-            console.log("Progress: ", current, total);
-          }
-        },
-      })
-      .then(() => {
-        console.log("Game started");
-        $auth.setLoading(false);
-      }, displayFailureNotice);
+
+    // wait for 100ms (due to svelte weird bug of loading)
+    // canvas wasn't loaded yet when the startGame was called
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    engine.startGame({}).then(() => {
+      console.log("Game started");
+      $auth.setLoading(false);
+    }, displayFailureNotice);
   });
 </script>
 
-<canvas class="canvas" id="canvas">Your browser does not support the canvas tag</canvas>
+<canvas class="canvas" id="canvas"
+  >Your browser does not support the canvas tag</canvas
+>
 
 <style>
   .canvas {
