@@ -1,6 +1,8 @@
 <script>
   import "../../index.scss";
   import { onMount } from "svelte";
+  import { auth } from "../../stores/auth";
+  import { goto } from "$app/navigation";
 
   var index = `PartyWorld`;
   var main_pck = `${index}.pck`;
@@ -30,6 +32,8 @@
   }
 
   onMount(() => {
+    if (!$auth.identity) goto("/");
+
     console.log("Game mounted");
     let Engine = window.Engine;
     const engine = new Engine(GODOT_CONFIG);
@@ -45,6 +49,7 @@
       })
       .then(() => {
         console.log("Game started");
+        $auth.setLoading(false);
       }, displayFailureNotice);
   });
 </script>

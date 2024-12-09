@@ -1,6 +1,5 @@
 <script>
   import "../index.scss";
-  import { onMount } from "svelte";
   import { auth } from "../stores/auth";
   import Background from "./background.svelte";
 
@@ -9,13 +8,15 @@
   };
 </script>
 
-<div class="parent">
-  <Background />
-  <div class="inner-container">
-    <div class="landing-page-header-text">Welcome to the Partyverse</div>
-    <button class="play-button glow-effect" on:click={login}>Login</button>
+{#if $auth.isReady && !$auth.loading}
+  <div class="parent">
+    <Background />
+    <div class="inner-container">
+      <div class="landing-page-header-text">Welcome to the Partyverse</div>
+      <button class="play-button glow-effect" on:click={login}>Login</button>
+    </div>
   </div>
-</div>
+{/if}
 
 <style>
   .parent {

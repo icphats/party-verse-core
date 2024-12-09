@@ -28,15 +28,17 @@
 </script>
 
 <main class="main-container">
-  {#if !$auth.isReady}
-    <img class="loading-image" src={loading} alt="loading" />
-  {:else}
-    <slot />
+  {#if !$auth.isReady || $auth.loading}
+    <div class="loading-container">
+      <img class="loading-image" src={loading} alt="loading" />
+    </div>
   {/if}
+  <slot />
 </main>
 
 <style>
   .main-container {
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,7 +46,17 @@
     width: 100vw;
   }
 
+  .loading-container {
+    position: absolute;
+    height: 0;
+    width: 0;
+    z-index: -1;
+  }
+
   .loading-image {
+    position: relative;
+    translate: -50% -50%;
     width: 5rem;
+    z-index: -1;
   }
 </style>
