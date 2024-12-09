@@ -40,7 +40,7 @@ export const defaultOptions = {
  
   loginOptions: {
     identityProvider: getIdentityProvider(),
-    derivationOrigin : process.env.DFX_NETWORK !== "ic" ? "http://localhost:3000" : "https://partyhats.xyz",
+    derivationOrigin : process.env.DFX_NETWORK !== "ic" ? "http://localhost:3000" : "https://partyverse.live",
     maxTimeToLive: BigInt(4) * BigInt (7) * BigInt(24) * BigInt(3_600_000_000_000), // 4 weeks
   },
 

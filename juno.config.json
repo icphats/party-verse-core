@@ -1,0 +1,9 @@
+{
+  "satellite": {
+    "ids": {
+      "staging": "yee4t-gaaaa-aaaal-aruaq-cai",
+      "production": ""
+    },
+    "source": "/src/party-verse-core-frontend/dist"
+  }
+}

@@ -4,12 +4,12 @@
   import { auth } from "../../stores/auth";
   import { goto } from "$app/navigation";
 
-  $: if (!$auth.identity) {
-    //check to make sure we are on the client side only
-    if (typeof window !== "undefined") {
-      goto("/");
-    }
-  }
+  // $: if (!$auth.identity) {
+  //   //check to make sure we are on the client side only
+  //   if (typeof window !== "undefined") {
+  //     goto("/");
+  //   }
+  // }
 
   var index = `PartyWorld`;
   var main_pck = `${index}.pck`;
@@ -54,9 +54,7 @@
   });
 </script>
 
-<canvas class="canvas" id="canvas"
-  >Your browser does not support the canvas tag</canvas
->
+<canvas class="canvas" id="canvas">Your browser does not support the canvas tag</canvas>
 
 <style>
   .canvas {
