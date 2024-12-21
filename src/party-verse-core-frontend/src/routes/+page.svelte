@@ -22,16 +22,31 @@
 
 {#if $auth.isReady}
   <div class="parent">
-    <Background />
-    <div class="inner-container">
-      <div class="landing-page-header-text">Welcome to the Partyverse</div>
-      <button class="play-button glow-effect" on:click={login}>Login</button>
+    <div class="page">
+      <Background />
+      <div class="inner-container">
+        <div class="landing-page-header-text">Welcome to the Partyverse</div>
+        <button class="play-button glow-effect" on:click={login}>Login</button>
+      </div>
+    </div>
+    <div class="page">
+      <div class="inner-container">
+        <div class="landing-page-header-text">Welcome to the Partyverse</div>
+      </div>
     </div>
   </div>
 {/if}
 
 <style>
   .parent {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Ensure children take full width */
+    height: 100vh; /* Make sure the parent takes full viewport height */
+    overflow-y: auto; /* Allow scrolling */
+  }
+
+  .page {
     height: 100vh;
     width: 100vw;
     display: flex;

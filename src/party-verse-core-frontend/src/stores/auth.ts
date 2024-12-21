@@ -1,17 +1,13 @@
 import { AuthClient } from "@dfinity/auth-client";
 import { readable } from "svelte/store";
-import { createAgent } from '@dfinity/utils';
-
-// import mixpanel from "mixpanel-browser";
+// import { createAgent, createActor } from '@dfinity/utils';
  
-const isLocal = process.env.DFX_NETWORK === 'local';
-let HOST : string = isLocal ? "http://localhost:4943" : "https://ic0.app";
+const isLocal = process.env.DFX_NETWORK !== "ic";
 
 export const getIdentityProvider = () => {
   let idpProvider;
-  // Safeguard against server rendering
+  // Safeguard against server rendering33
   if (typeof window !== "undefined") {
-    const isLocal = process.env.DFX_NETWORK !== "ic";
     // Safari does not support localhost subdomains
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     if (isLocal && isSafari) {
@@ -40,16 +36,23 @@ export const defaultOptions = {
  
   loginOptions: {
     identityProvider: getIdentityProvider(),
-    derivationOrigin : process.env.DFX_NETWORK !== "ic" ? "http://localhost:3000" : "https://partyverse.live",
+    derivationOrigin : isLocal ? "http://localhost:3000" : "https://partyverse.live",
     maxTimeToLive: BigInt(4) * BigInt (7) * BigInt(24) * BigInt(3_600_000_000_000), // 4 weeks
   },
 
-  // loginOptions: {
-  //   identityProvider: getIdentityProvider(),
-  //   derivationOrigin : process.env.DFX_NETWORK !== "ic" ? "http://localhost:3000" : "https://icphats.io",
-  //   maxTimeToLive: BigInt(4) * BigInt (7) * BigInt(24) * BigInt(3_600_000_000_000), // 4 weeks
-  // },
 };
+
+// function actorFromIdentity(identity) {
+//   return createActor(canisterId, {
+//     agentOptions: {
+//       host:
+//         process.env.DFX_NETWORK === "ic"
+//           ? "https://icp-api.io"
+//           : "http://localhost:4943",
+//       identity,
+//     },
+//   });
+// }
 
 /**
  *
@@ -81,8 +84,6 @@ const initialAuth = {
   init: () => {},
   identity: null,
   authClient: null,
-  agent: null,
-  pid: "",
   loading: true,
 };
 
@@ -97,40 +98,25 @@ export const auth = readable(initialAuth, (set) => {
    */
   const auth : any = {
     ...initialAuth,
-
     init: async () => {
-      if (typeof window === "undefined") {
-        // Exit early if not in a browser environment, remove later
-        return;
-      }
-      const authClient : any = await AuthClient.create(defaultOptions.createOptions);
+      // if (typeof window === "undefined") {
+      //   // Exit early if not in a browser environment, remove later
+      //   return;
+      // }
+      const authClient = await AuthClient.create(defaultOptions.createOptions);
       auth.authClient = authClient;
       const isAuthenticated = await authClient.isAuthenticated();
       const identity = isAuthenticated ? authClient.getIdentity() : null;
+      // const whoamiActor = identity ? actorFromIdentity(identity) : null;
 
-      try {
-          if (identity) {
-            auth.agent = await createAgent({
-            identity,
-            host: HOST,
-          });
-          auth.agent.replaceIdentity(identity);
-          let pid = identity.getPrincipal().toText()
-          auth.pid = pid;
-        }
-
-        auth.isAuthenticated = isAuthenticated;
-        auth.identity = identity;
-        auth.isReady = true;
-        set(auth);
-      } catch (error) {
-        console.error("Unexpected error during init:", error);
-      }
+      auth.isAuthenticated = isAuthenticated;
+      auth.identity = identity;
+      auth.isReady = true;
+      
+      set(auth);
     },
-
     login: async () => {
-      try {
-        console.log("login");
+
         if (!auth.isReady) return;
         if (!auth.authClient) {
           await auth.init();
@@ -146,31 +132,20 @@ export const auth = readable(initialAuth, (set) => {
               ? authClient?.getIdentity() ?? null
               : null;
 
-            if(identity) {
-              auth.agent = await createAgent({
-                identity,
-                host: HOST,
-              });
-              auth.agent.replaceIdentity(identity);
-              let pid = identity.getPrincipal().toText()
-              auth.pid = pid;
-            }
+
             auth.isAuthenticated = isAuthenticated;
             auth.identity = identity;
+
             set(auth);
           },
         });
-      } catch (error) {
-          console.error("there is error (temp)");
-      }
-
     },
     logout: async () => {
       await auth.authClient?.logout();
       auth.isAuthenticated = false;
       auth.identity = null;
       auth.agent = null;
-      auth.pid = "";
+      
       set(auth);
     },
     setLoading: (loading: boolean) => {

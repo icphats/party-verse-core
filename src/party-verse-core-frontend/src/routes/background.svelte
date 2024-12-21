@@ -20,18 +20,18 @@
   }
 
   function getRandomStyle(index) {
-    const randomX = Math.random() * 100;
-    const randomY = Math.random() * 100;
+    const randomX = Math.random() * 110;
+    const randomY = Math.random() * 110;
     const randomDuration = 30 + Math.random() * 100; // Duration for the floating animation
     const animationName = `float${index}`;
 
     const keyframes = `
         @keyframes ${animationName} {
-          0% { transform: translate(${Math.random() * 100 - randomX}vw, ${Math.random() * 100 - randomY}vh); }
-          25% { transform: translate(${Math.random() * 100 - randomX}vw, ${Math.random() * 100 - randomY}vh); }
-          50% { transform: translate(${Math.random() * 100 - randomX}vw, ${Math.random() * 100 - randomY}vh); }
-          75% { transform: translate(${Math.random() * 100 - randomX}vw, ${Math.random() * 100 - randomY}vh); }
-          100% { transform: translate(${Math.random() * 100 - randomX}vw, ${Math.random() * 100 - randomY}vh); }
+          0% { transform: translate(${Math.random() * 105 - randomX}vw, ${Math.random() * 105 - randomY}vh); }
+          25% { transform: translate(${Math.random() * 105 - randomX}vw, ${Math.random() * 105 - randomY}vh); }
+          50% { transform: translate(${Math.random() * 105 - randomX}vw, ${Math.random() * 105 - randomY}vh); }
+          75% { transform: translate(${Math.random() * 105 - randomX}vw, ${Math.random() * 105 - randomY}vh); }
+          100% { transform: translate(${Math.random() * 105 - randomX}vw, ${Math.random() * 105 - randomY}vh); }
         }
       `;
 
