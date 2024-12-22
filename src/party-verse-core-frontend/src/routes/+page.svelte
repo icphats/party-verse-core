@@ -24,7 +24,7 @@
     <div class="page">
       <Background />
       <div class="inner-container">
-        <div class="landing-page-header-text">Welcome to the Partyverse</div>
+        <div class="landing-page-header-text">Welcome</div>
         <button class="play-button glow-effect" on:click={login}>Login</button>
       </div>
     </div>
