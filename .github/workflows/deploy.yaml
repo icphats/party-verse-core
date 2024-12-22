@@ -27,7 +27,7 @@ jobs:
 
       - name: DFX build
         run: |
-          dfx build --ic
+          dfx build party-verse-core-frontend --ic
 
       - name: Build
         run: npm run build
