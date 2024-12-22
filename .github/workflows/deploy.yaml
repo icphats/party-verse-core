@@ -26,7 +26,11 @@ jobs:
         run: npm ci
 
       - name: DFX build
-        run: dfx build
+        run: |
+          dfx canister create internet_identity
+          dfx canister create party-verse-core-backend
+          dfx canister create party-verse-core-frontend
+          dfx build
 
       - name: Build
         run: npm run build
