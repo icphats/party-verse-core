@@ -2,7 +2,6 @@
   import "../index.scss";
   import { auth } from "../stores/auth";
   import Background from "./background.svelte";
-  import { onMount } from "svelte";
 
   const login = async () => {
     $auth.login();
@@ -29,11 +28,11 @@
         <button class="play-button glow-effect" on:click={login}>Login</button>
       </div>
     </div>
-    <div class="page">
+    <!-- <div class="page">
       <div class="inner-container">
         <div class="landing-page-header-text">Welcome to the Partyverse</div>
       </div>
-    </div>
+    </div> -->
   </div>
 {/if}
 

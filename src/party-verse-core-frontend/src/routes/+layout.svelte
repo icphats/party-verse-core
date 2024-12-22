@@ -16,9 +16,9 @@
 
   $: if ($auth.identity) {
     //check to make sure we are on the client side only
-    if (typeof window !== "undefined") {
-      goto("/game");
-    }
+    // if (typeof window !== "undefined") {
+    //   goto("/game");
+    // }
   }
 
   //adjusts viewport height for mobile devices **very important**
@@ -31,7 +31,7 @@
 </script>
 
 <main class="main-container">
-  {#if !$auth.isReady || $auth.loading}
+  {#if !$auth.isReady}
     <div class="loading-container">
       <div class="loading-inner-container">
         <img class="loading-image" src={loading} alt="loading" />
