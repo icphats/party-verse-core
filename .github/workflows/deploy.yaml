@@ -16,11 +16,8 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
 
-      - name: create frontend canister
-        run: dfx canister create party-verse-core-frontend
-
-      - name: create backend canister
-        run: dfx build party-verse-core-frontend
+      - name: install dfx
+        run: sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
 
       - name: Install Dependencies
         run: npm ci
