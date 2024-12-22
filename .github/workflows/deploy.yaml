@@ -35,6 +35,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check .env
+        run: cat .env
+
       - name: Deploy to Juno
         uses: junobuild/juno-action@main
         with:
