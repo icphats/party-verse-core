@@ -13,6 +13,8 @@ jobs:
 
       - name: Install dfx
         uses: dfinity/setup-dfx@main
+        with:
+          dfx-version: "0.22.0"
 
       - name: Confirm successful installation
         run: dfx --version
