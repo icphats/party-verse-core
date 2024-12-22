@@ -29,6 +29,9 @@ jobs:
 
       - name: DFX build
         run: |
+          dfx start --background
+          dfx canister create internet_identity
+          dfx canister create party-verse-core-frontend
           dfx build
           dfx build --ic
 
