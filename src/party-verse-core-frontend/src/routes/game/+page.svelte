@@ -1,7 +1,7 @@
 <script>
   import "../../index.scss";
   import { onMount } from "svelte";
-  import { auth } from "../../stores/auth";
+  // import { auth } from "../../stores/auth";
   import { goto } from "$app/navigation";
 
   // $: if (!$auth.identity) {
@@ -28,7 +28,7 @@
   };
 
   function displayFailureNotice(err) {
-    $auth.setLoading(false);
+    // $auth.setLoading(false);
     console.error(err);
     if (err instanceof Error) {
       console.error(err.message);
@@ -49,7 +49,7 @@
     await new Promise((resolve) => setTimeout(resolve, 100));
     engine.startGame({}).then(() => {
       console.log("Game started");
-      $auth.setLoading(false);
+      // $auth.setLoading(false);
     }, displayFailureNotice);
   });
 </script>
