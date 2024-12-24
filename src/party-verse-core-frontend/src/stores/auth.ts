@@ -1,7 +1,8 @@
 import { AuthClient } from "@dfinity/auth-client";
 import { readable } from "svelte/store";
+import type { HttpAgent, Identity } from "@dfinity/agent";
 // import { createAgent, createActor } from '@dfinity/utils';
- 
+
 const isLocal = process.env.DFX_NETWORK !== "ic";
 
 export const getIdentityProvider = () => {
@@ -19,7 +20,6 @@ export const getIdentityProvider = () => {
   return idpProvider;
 };
 
-
 export const defaultOptions = {
   /**
    *  @type {import("@dfinity/auth-client").AuthClientCreateOptions}
@@ -32,14 +32,16 @@ export const defaultOptions = {
   },
   /**
    * @type {import("@dfinity/auth-client").AuthClientLoginOptions}
-  */
- 
+   */
+
   loginOptions: {
     identityProvider: getIdentityProvider(),
-    derivationOrigin : isLocal ? "http://localhost:3000" : "https://partyverse.live",
-    maxTimeToLive: BigInt(4) * BigInt (7) * BigInt(24) * BigInt(3_600_000_000_000), // 4 weeks
+    derivationOrigin: isLocal
+      ? "http://localhost:3000"
+      : "https://partyverse.live",
+    maxTimeToLive:
+      BigInt(4) * BigInt(7) * BigInt(24) * BigInt(3_600_000_000_000), // 4 weeks
   },
-
 };
 
 // function actorFromIdentity(identity) {
@@ -73,18 +75,33 @@ export const defaultOptions = {
  * @property {() => void} init
  */
 
+type Auth = {
+  isAuthenticated: boolean;
+  isReady: boolean;
+  login: () => void;
+  logout: () => void;
+  init: () => void;
+  setLoading: (loading: boolean) => void;
+  identity: Identity | null;
+  authClient: AuthClient | null;
+  loading: boolean;
+  agent: HttpAgent | null;
+};
+
 /**
  * @type {Auth}
  */
-const initialAuth = {
+const initialAuth: Auth = {
   isAuthenticated: false,
   isReady: false,
   login: () => {},
   logout: () => {},
   init: () => {},
+  setLoading: (loading: boolean) => {},
   identity: null,
   authClient: null,
   loading: true,
+  agent: null,
 };
 
 /**
@@ -96,7 +113,7 @@ export const auth = readable(initialAuth, (set) => {
   /**
    * @type {Auth}
    */
-  const auth : any = {
+  const auth: Auth = {
     ...initialAuth,
     init: async () => {
       // if (typeof window === "undefined") {
@@ -110,42 +127,40 @@ export const auth = readable(initialAuth, (set) => {
       // const whoamiActor = identity ? actorFromIdentity(identity) : null;
 
       auth.isAuthenticated = isAuthenticated;
-      auth.identity = identity;
+      auth.identity = identity as Identity | null;
       auth.isReady = true;
-      
+
       set(auth);
     },
     login: async () => {
+      if (!auth.isReady) return;
+      if (!auth.authClient) {
+        await auth.init();
+      }
+      auth.authClient?.login({
+        ...defaultOptions.loginOptions,
+        identityProvider: getIdentityProvider(),
+        onSuccess: async () => {
+          const authClient = auth.authClient;
+          const isAuthenticated =
+            (await authClient?.isAuthenticated()) ?? false;
+          const identity = isAuthenticated
+            ? authClient?.getIdentity() ?? null
+            : null;
 
-        if (!auth.isReady) return;
-        if (!auth.authClient) {
-          await auth.init();
-        }
-        auth.authClient?.login({
-          ...defaultOptions.loginOptions,
-          identityProvider: getIdentityProvider(),
-          onSuccess: async () => {
-            const authClient = auth.authClient;
-            const isAuthenticated =
-              (await authClient?.isAuthenticated()) ?? false;
-            const identity = isAuthenticated
-              ? authClient?.getIdentity() ?? null
-              : null;
+          auth.isAuthenticated = isAuthenticated;
+          auth.identity = identity as Identity | null;
 
-
-            auth.isAuthenticated = isAuthenticated;
-            auth.identity = identity;
-
-            set(auth);
-          },
-        });
+          set(auth);
+        },
+      });
     },
     logout: async () => {
       await auth.authClient?.logout();
       auth.isAuthenticated = false;
       auth.identity = null;
-      auth.agent = null;
-      
+      auth.agent = null as HttpAgent | null;
+
       set(auth);
     },
     setLoading: (loading: boolean) => {

@@ -15,10 +15,10 @@
   });
 
   $: if ($auth.identity) {
-    //check to make sure we are on the client side only
-    // if (typeof window !== "undefined") {
-    //   goto("/game");
-    // }
+    // check to make sure we are on the client side only
+    if (typeof window !== "undefined") {
+      goto("/game");
+    }
   }
 
   //adjusts viewport height for mobile devices **very important**

@@ -8,11 +8,11 @@
     $auth.setLoading(true);
   };
 
-  // const setLoading = () => {
-  //   if (!$auth.identity) {
-  //     $auth.setLoading(false);
-  //   }
-  // };
+  const setLoading = () => {
+    if (!$auth.identity) {
+      $auth.setLoading(false);
+    }
+  };
 
   setTimeout(() => {
     setLoading();

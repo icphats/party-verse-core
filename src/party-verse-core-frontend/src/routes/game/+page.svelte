@@ -1,15 +1,15 @@
 <script>
   import "../../index.scss";
   import { onMount } from "svelte";
-  // import { auth } from "../../stores/auth";
+  import { auth } from "../../stores/auth";
   import { goto } from "$app/navigation";
 
-  // $: if (!$auth.identity) {
-  //   //check to make sure we are on the client side only
-  //   if (typeof window !== "undefined") {
-  //     goto("/");
-  //   }
-  // }
+  $: if (!$auth.identity) {
+    //check to make sure we are on the client side only
+    if (typeof window !== "undefined") {
+      goto("/");
+    }
+  }
 
   var index = `PartyWorld`;
   var main_pck = `${index}.pck`;
@@ -44,6 +44,12 @@
     let Engine = window.Engine;
     const engine = new Engine(GODOT_CONFIG);
 
+    window.fetch_identity = (callback) => {
+      let identity = $auth.identity;
+      console.log("Identity fetched", identity);
+      callback(identity?.getPrincipal().toText());
+    };
+
     // wait for 100ms (due to svelte weird bug of loading)
     // canvas wasn't loaded yet when the startGame was called
     await new Promise((resolve) => setTimeout(resolve, 100));
@@ -54,7 +60,9 @@
   });
 </script>
 
-<canvas class="canvas" id="canvas">Your browser does not support the canvas tag</canvas>
+<canvas class="canvas" id="canvas"
+  >Your browser does not support the canvas tag</canvas
+>
 
 <style>
   .canvas {
